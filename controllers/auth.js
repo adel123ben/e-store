@@ -1,5 +1,4 @@
 const User =  require('../models/auth');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
@@ -8,12 +7,10 @@ exports.register = async (req, res) => {
     if(!name || !email || !password) return res.status(400).send({msg:{"error":"All fields are required"}})
     const ifUserExist = await User.findOne({email});
     if(ifUserExist) return res.status(400).send({msg:{"error":"User already exist"}})
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
     const addNewUser = new User({
         name,
         email,
-        password: hashedPassword
+        password
     });
     const savedUser = await addNewUser.save();
     res.status(201).send({msg:{"success":"User created successfully"}, savedUser})
@@ -29,8 +26,6 @@ exports.login = async (req, res) => {
         if(!email || !password) return res.status(400).send({msg:{"error":"All fields are required"}})
         const user = await User.findOne({email});
         if(!user) return res.status(400).send({msg:{"error":"User does not exist"}})
-        const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch) return res.status(400).send({msg:{"error":"Invalid credentials"}})
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
             expiresIn: '1d'});
             await user.save();
