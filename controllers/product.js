@@ -20,9 +20,10 @@ exports.getProducts = async (req, res) => {
         const {name} = req.query;
         const products = await Product.find(name && name !=="" ?{
             $or: [
-                { title: { $regex: name, $options: "i" } },
-                { description: { $regex: name, $options: "i" } },
-                { author: { $regex: name, $options: "i" } },
+                { name: { $regex: name, $options: "i" } },
+                { size: { $regex: name, $options: "i" } },
+                { color: { $regex: name, $options: "i" } },
+                { category: { $regex: name, $options: "i" } },
             ],
         }: {}).populate('size').populate('color').populate('category');
         if(!products) return res.status(400).send({msg:{"error":"Products not found"}})
