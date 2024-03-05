@@ -3,11 +3,11 @@ const SizeCategory = require('../models/sizecategory');
 
 exports.createProduct = async (req, res) => {
     try{
-        const {name, price, image, size, color, category} = req.body;
-        if(!name || !price || !image || !size || !color, !category) return res.status(400).send({msg:{"error":"All fields are required"}})
-        const ifProductExist = await Product.findOne({name});
+        const {title, price, image, size, color, category} = req.body;
+        if(!title || !price || !image || !size || !color, !category) return res.status(400).send({msg:{"error":"All fields are required"}})
+        const ifProductExist = await Product.findOne({title: title});
         if(ifProductExist) return res.status(400).send({msg:{"error":"Product already exist"}})
-        const Addproduct = new Product({name, price, image, size: size, color: color, category: category});
+        const Addproduct = new Product({title, price, image, size: size, color: color, category: category});
         await Addproduct.save();
         res.status(201).send({msg:{"success":"Product created successfully"}, Addproduct});
     }catch(err){
@@ -20,7 +20,7 @@ exports.getProducts = async (req, res) => {
         const {query} = req.query;
         const products = await Product.find(query && query !=="" ?{
             $or: [
-                { name: { $regex: query, $options: "i" } },
+                { title: { $regex: query, $options: "i" } },
                 { size: { $regex: query, $options: "i" } },
                 { color: { $regex: query, $options: "i" } },
                 { category: { $regex: query, $options: "i" } },
@@ -36,9 +36,9 @@ exports.getProducts = async (req, res) => {
 exports.updateProduct = async (req, res) => {
     try{
         const id = req.params.id;
-        const {name, price, image, size, color, category} = req.body;
-        if(!name || !price || !image || !size, !color, !category) return res.status(400).send({msg:{"error":"All fields are required"}})
-        const product = await Product.findByIdAndUpdate(id, {name, price, image, size: size, color: color, category: category});
+        const {title, price, image, size, color, category} = req.body;
+        if(!title || !price || !image || !size, !color, !category) return res.status(400).send({msg:{"error":"All fields are required"}})
+        const product = await Product.findByIdAndUpdate(id, {title, price, image, size: size, color: color, category: category});
         if(!product) return res.status(400).send({msg:{"error":"Product not found"}})
         res.status(200).json({msg:"update withe success",data:product})
     }catch(err){
