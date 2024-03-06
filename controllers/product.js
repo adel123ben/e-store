@@ -33,18 +33,21 @@ exports.getProducts = async (req, res) => {
     }
 }
 
-exports.updateProduct = async (req, res) => {
-    try{
-        const id = req.params.id;
-        const {title, price, image, size, color, category} = req.body;
-        if(!title || !price || !image || !size, !color, !category) return res.status(400).send({msg:{"error":"All fields are required"}})
-        const product = await Product.findByIdAndUpdate(id, {title, price, image, size: size, color: color, category: category});
-        if(!product) return res.status(400).send({msg:{"error":"Product not found"}})
-        res.status(200).json({msg:"update withe success",data:product})
-    }catch(err){
-        res.status(500).send(err)
+exports.updateOneProduct = async (req, res) => {
+    try {
+      const id = req.params.id;
+      
+      const updatedCategoie = await Product.findByIdAndUpdate(id, req.body, {
+        new: true,
+        useFindAndModify: false,
+      });
+      res
+        .status(200)
+        .json({ msg: "Product updated with success", data: updatedCategoie });
+    } catch (err) {
+      res.status(500).json({ msg: err.message });
     }
-}
+  };
 
 exports.deleteProduct = async (req, res) => {
     try{
