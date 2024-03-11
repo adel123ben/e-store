@@ -17,13 +17,10 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try{
-        const {name} = req.query;
-        const products = await Product.find(name && name !=="" ?{
+        const {query} = req.query;
+        const products = await Product.find(query && query !=="" ?{
             $or: [
-                { title: { $regex: name, $options: "i" } },
-                { size: { $regex: name, $options: "i" } },
-                { color: { $regex: name, $options: "i" } },
-                { category: { $regex: name, $options: "i" } },
+                { title: { $regex: query, $options: "i" } }
             ],
         }: {}).populate('size').populate('color').populate('category');
         if(!products) return res.status(400).send({msg:{"error":"Products not found"}})

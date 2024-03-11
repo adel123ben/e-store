@@ -6,7 +6,7 @@ const productRouter = require('./product')
 const sieCategoryRouter = require('./sizeCategory')
 const colorsCategoryRouter = require('./colorsCategory')
 const categoryRouter = require('./category')
-
+const formulaireRouter = require('./formulair')
 
 module.exports = (express) => {
     router.get('/', (req, res) => {
@@ -18,6 +18,7 @@ module.exports = (express) => {
     router.use('/size', sieCategoryRouter(express))
     router.use('/colors', colorsCategoryRouter(express))
     router.use('/category', categoryRouter(express))
+    router.use('/formulaire', formulaireRouter(express))
     return router
 }
 
