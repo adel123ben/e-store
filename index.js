@@ -7,6 +7,7 @@ const mainRoutes = require("./routes")
 require("dotenv").config();
 const upload = require('./middleware/upload');
 
+const baseUrl = process.env.BASE_URL || 'http://localhost:4000';
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -25,9 +26,9 @@ mongoose.connect(process.env.DB_DEV_URL, {
 
 app.use('/api', mainRoutes(express))
 
-
+app.locals.baseUrl = baseUrl;
 
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Server is running on port ${port}`);
 } )

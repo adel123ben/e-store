@@ -4,7 +4,7 @@ const DIR = "./public/uploads";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, DIR);
+    cb(null, path.join(__dirname, 'public', 'uploads'));
   },
   filename: (req, file, cb) => {
     // "hello world" => ["hello","world"] "hello-world"
