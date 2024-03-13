@@ -13,6 +13,30 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    image2: {
+        type: String,
+        required: true
+    },
+    benefit: {
+        type: String,
+        required: true
+    },
+    benefit2: {
+        type: String,
+        required: true
+    },
+    benefit3: {
+        type: String,
+        required: true
+    },
+    benefit4: {
+        type: String,
+        required: true
+    },
+    benefit5: {
+        type: String,
+        required: true
+    },
     size:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'SizeCategory'

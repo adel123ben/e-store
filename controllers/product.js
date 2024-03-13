@@ -1,13 +1,15 @@
 const Product = require('../models/product');
 const SizeCategory = require('../models/sizecategory');
 
-exports.createProduct = async (req, res) => {
+
+exports.createProduct = async  (req, res) => {
     try{
-        const {title, price, image, size, color, category} = req.body;
-        if(!title || !price || !image || !size || !color, !category) return res.status(400).send({msg:{"error":"All fields are required"}})
+        const {title, price, image, size, color, category, benefit, benefit2, benefit3, benefit4, benefit5, image2 } = req.body;
+        const url = req.protocol + "://" + req.get("host");
+        if(!title || !price || !image || !size || !color, !category || !benefit || !benefit2 || !benefit3 || !benefit4 || !benefit5 || !image2) return res.status(400).send({msg:{"error":"All fields are required"}})
         const ifProductExist = await Product.findOne({title: title});
         if(ifProductExist) return res.status(400).send({msg:{"error":"Product already exist"}})
-        const Addproduct = new Product({title, price, image, size: size, color: color, category: category});
+        const Addproduct = new Product({title, price, image: url + "/uploads/" + req.file.filename, image2: url + "/uploads/" + req.file.filename, size: size, color: color, category: category, benefit: benefit, benefit2: benefit2, benefit3: benefit3, benefit4: benefit4, benefit5: benefit5});
         await Addproduct.save();
         res.status(201).send({msg:{"success":"Product created successfully"}, Addproduct});
     }catch(err){

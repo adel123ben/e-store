@@ -5,10 +5,13 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const mainRoutes = require("./routes")
 require("dotenv").config();
+const upload = require('./middleware/upload');
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static(__dirname + '/public'))
+app.use('/uploads', express.static('uploads'));
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DB_DEV_URL, {
