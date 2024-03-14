@@ -6,7 +6,7 @@ exports.createProduct = async  (req, res) => {
     try{
         const {title, price, image, size, color, category, benefit, benefit2, benefit3, benefit4, benefit5, image2 } = req.body;
         const url = req.protocol + "://" + req.get("host");
-        if(!title || !price || !image || !size || !color, !category || !benefit || !benefit2 || !benefit3 || !benefit4 || !benefit5) return res.status(400).send({msg:{"error":"All fields are required"}})
+        if(!title || !price || !image || !size || !color, !category) return res.status(400).send({msg:{"error":"All fields are required"}})
         const ifProductExist = await Product.findOne({title: title});
         if(ifProductExist) return res.status(400).send({msg:{"error":"Product already exist"}})
         const Addproduct = new Product({title, price, image: url + "/uploads/" + req.file.filename,image2: url + "/uploads/" + req.file.filename, size: size, color: color, category: category, benefit: benefit, benefit2: benefit2, benefit3: benefit3, benefit4: benefit4, benefit5: benefit5});
@@ -35,29 +35,13 @@ exports.getProducts = async (req, res) => {
 exports.updateOneProduct = async (req, res) => {
     try {
       const id = req.params.id;
-      const updateImage = req.file;
-      const url = req.protocol + "://" + req.get("host");
-      if (updateImage) {
-        const updatedCategoie = await Product.findByIdAndUpdate(
-          id,
-          {
-            $set: {
-              image: url + "/uploads/" + req.file.filename,
-            },
-          },
-          { new: true, useFindAndModify: false }
-        );
-        res
-          .status(200)
-          .json({ msg: "Product updated with success", data: updatedCategoie });
-      }
-    //   const updatedCategoie = await Product.findByIdAndUpdate(id, req.body, {
-    //     new: true,
-    //     useFindAndModify: false,
-    //   });
-    //   res
-    //     .status(200)
-    //     .json({ msg: "Product updated with success", data: updatedCategoie });
+      const updatedCategoie = await Product.findByIdAndUpdate(id, req.body, {
+        new: true,
+        useFindAndModify: false,
+      });
+      res
+        .status(200)
+        .json({ msg: "Product updated with success", data: updatedCategoie });
     } catch (err) {
       res.status(500).json({ msg: err.message });
     }
