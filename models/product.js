@@ -15,7 +15,7 @@ const productSchema = new mongoose.Schema({
     },
     image2: {
         type: String,
-        required: true
+        required: false
     },
     benefit: {
         type: String,
@@ -39,15 +39,18 @@ const productSchema = new mongoose.Schema({
     },
     size:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'SizeCategory'
+        ref: 'SizeCategory',
+        required: false
     },
     color:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ColorsCategory'
+        ref: 'ColorsCategory',
+        required: false
     },
     category:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category'
+        ref: 'Category',
+        required: true
     }
 }, {
     timestamps: true
