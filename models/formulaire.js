@@ -22,6 +22,10 @@ const formulaireSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    isMarked: {
+        type: Boolean,
+        default: false
+    },
     product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
