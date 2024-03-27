@@ -35,8 +35,7 @@ exports.getProducts = async (req, res) => {
 exports.updateOneProduct = async (req, res) => {
     try {
       const id = req.params.id;
-      const {onSale} = req.body;
-      const updatedCategoie = await Product.findByIdAndUpdate(id, {onSale},  req.body, {
+      const updatedCategoie = await Product.findByIdAndUpdate(id, req.body, {
         new: true,
         useFindAndModify: false,
       });
