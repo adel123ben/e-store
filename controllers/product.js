@@ -4,12 +4,12 @@ const SizeCategory = require('../models/sizecategory');
 
 exports.createProduct = async  (req, res) => {
     try{
-        const {title, price, image,description, benefit, benefit2, benefit3, benefit4, benefit5, image2 } = req.body;
+        const {title, onSale, price, image,description, benefit, benefit2, benefit3, benefit4, benefit5, image2 } = req.body;
         // const url = req.protocol + "://" + req.get("host");
         if(!title || !price || !image || !benefit || !benefit2 || !benefit3 || !benefit4 || !benefit5 || !description) return res.status(400).send({msg:{"error":"All fields are required"}})
         const ifProductExist = await Product.findOne({title: title});
         if(ifProductExist) return res.status(400).send({msg:{"error":"Product already exist"}})
-        const Addproduct = new Product({title, price, image,image2, description, benefit, benefit2, benefit3, benefit4, benefit5});
+        const Addproduct = new Product({title, price, image,image2, description, benefit, benefit2, benefit3, benefit4, benefit5 , onSale});
         await Addproduct.save();
         res.status(201).send({msg:{"success":"Product created successfully"}, Addproduct});
     }catch(err){
@@ -24,7 +24,7 @@ exports.getProducts = async (req, res) => {
             $or: [
                 { title: { $regex: query, $options: "i" } }
             ],
-        }: {});
+        }:{})
         if(!products) return res.status(400).send({msg:{"error":"Products not found"}})
         res.send(products)
     }catch(err){
@@ -35,7 +35,8 @@ exports.getProducts = async (req, res) => {
 exports.updateOneProduct = async (req, res) => {
     try {
       const id = req.params.id;
-      const updatedCategoie = await Product.findByIdAndUpdate(id, req.body, {
+      const {onSale} = req.body;
+      const updatedCategoie = await Product.findByIdAndUpdate(id, {onSale},  req.body, {
         new: true,
         useFindAndModify: false,
       });
@@ -61,7 +62,7 @@ exports.deleteProduct = async (req, res) => {
 exports.getProductWithId = async (req, res) => {
     try{
         const id = req.params.id;
-        const product = await Product.findById(id).populate('size').populate('color').populate('category');
+        const product = await Product.findById(id);
         if(!product) return res.status(400).send({msg:{"error":"Product not found"}})
         res.status(200).json({msg:"get withe success",data:product})
     }catch(err){

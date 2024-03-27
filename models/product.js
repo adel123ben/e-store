@@ -40,6 +40,10 @@ const productSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true
+    },
+    onSale: {
+        type: Boolean,
+        default: true
     }
     
 }, {
