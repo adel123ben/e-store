@@ -37,21 +37,11 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    size:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'SizeCategory',
-        required: false
-    },
-    color:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'ColorsCategory',
-        required: false
-    },
-    category:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
-        required: false
-    },
+    description: {
+        type: String,
+        required: true
+    }
+    
 }, {
     timestamps: true
 });
